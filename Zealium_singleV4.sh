@@ -32,18 +32,15 @@ echo -e ${YELLOW}"If you don't know the answer, hit n for no"${CLEAR}
 echo -e ${YELLOW}"If you have custom IPs hit y for yes"${CLEAR}
 read customIP
 echo "Creating ${NODESN} Zealium system user(s) with no-login access:"
-if id "zealiumcoin" >/dev/null 2>&1; then
+if id "zealium" >/dev/null 2>&1; then
 echo "legacy user exists"
 MNl=1
-else
-sudo adduser --system --home /home/zealiumcoin zealiumcoin
-MNl=0
 fi
-if id "zealiumcoin1" >/dev/null 2>&1; then
+if id "zealium1" >/dev/null 2>&1; then
 echo "user exists"
 MN1=1
 else
-sudo adduser --system --home /home/zealiumcoin1 zealiumcoin1
+sudo adduser --system --home /home/zealium1 zealium1
 MN1=0
 fi
 echo
@@ -139,8 +136,8 @@ fi
 fi
 cd ~
 touch nzlcheck.tmp
-ps aux | grep zealiumcoin >> nzlcheck.tmp
-if grep home/zealiumcoin/.zealium nzlcheck.tmp
+ps aux | grep zealium >> nzlcheck.tmp
+if grep home/zealium/.zealium nzlcheck.tmp
 then
 echo Found OLD ${NC} nzl Node running
 OldNode="1"
@@ -149,7 +146,7 @@ echo No ${NC} nzl Node not running
 OldNode="0"
 fi
 until [[ $NC = 9 ]]; do
-if grep /home/zealiumcoin${NC}/.zealium nzlcheck.tmp
+if grep /home/zealium${NC}/.zealium nzlcheck.tmp
 then
 echo Found ${NC} nzl Node running
 declare IPN$NC="1"
@@ -163,37 +160,37 @@ NC=$[$NC+1]
 done
 rm -r nzlcheck.tmp
 if [[ "$OldNode" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium/.zealium stop
 fi
 if [[ "$IPN1" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin1/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium1/.zealium stop
 fi
 if [[ "$IPN2" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin2/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium2/.zealium stop
 fi
 if [[ "$IPN3" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin3/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium3/.zealium stop
 fi
 if [[ "$IPN4" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin4/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium4/.zealium stop
 fi
 if [[ "$IPN5" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin5/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium5/.zealium stop
 fi
 if [[ "$IPN6" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin6/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium6/.zealium stop
 fi
 if [[ "$IPN7" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin7/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium7/.zealium stop
 fi
 if [[ "$IPN8" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin8/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium8/.zealium stop
 fi
 if [[ "$IPN9" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin9/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium9/.zealium stop
 fi
 if [[ "$IPN0" = "1" ]]; then
-zealium-cli -datadir=/home/zealiumcoin0/.zealiumcoin stop
+zealium-cli -datadir=/home/zealium0/.zealium stop
 fi
 if [ ! -d /root/nzl ]; then
 sudo mkdir /root/nzl
@@ -204,34 +201,24 @@ wget https://github.com/zealiumcoin/Zealium/files/2433636/Zealium_Linux_1.0.1.ta
 tar -xzf Zealium_Linux_1.0.1.tar.gz
 sleep 3
 sudo mv /root/nzl/zealiumd /root/nzl/zealium-cli /usr/local/bin
-sudo chmod 755 -R /usr/local/bin/zealiumcoin*
+sudo chmod 755 -R /usr/local/bin/zealium*
 rm -rf /root/nzl
-if [ ! -f /home/zealiumcoin1/.zealiumcoin/zealium.conf ]; then
+if [ ! -f /home/zealium1/.zealium/zealium.conf ]; then
 echo -e "${GREEN}Configuring Zealium Node${CLEAR}"
-sudo mkdir /home/zealiumcoin1/.zealiumcoin
-sudo touch /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "rpcuser=user"`shuf -i 100000-9999999 -n 1` >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "rpcpassword=pass"`shuf -i 100000-9999999 -n 1` >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "rpcallowip=127.0.0.1" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "server=1" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "daemon=1" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "maxconnections=250" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "masternode=1" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "rpcport=19081" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "listen=0" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "externalip=$(hostname -I | cut -f1 -d' '):31090" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "masternodeprivkey=$MNKEY" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=104.227.34.247" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=45.32.215.232" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=144.202.28.81" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=108.61.176.250" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=198.13.60.23" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=98.100.196.187" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=45.77.110.221" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=192.227.215.189" >> /ho1me/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=104.238.137.65" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=8.3.29.28" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
-echo "addnode=104.227.34.247" >> /home/zealiumcoin1/.zealiumcoin/zealium.conf
+sudo mkdir /home/zealium1/.zealium
+sudo touch /home/zealium1/.zealium/zealium.conf
+echo "rpcuser=user"`shuf -i 100000-9999999 -n 1` >> /home/zealium1/.zealium/zealium.conf
+echo "rpcpassword=pass"`shuf -i 100000-9999999 -n 1` >> /home/zealium1/.zealium/zealium.conf
+echo "rpcallowip=127.0.0.1" >> /home/zealium1/.zealium/zealium.conf
+echo "server=1" >> /home/zealium1/.zealium/zealium.conf
+echo "daemon=1" >> /home/zealium1/.zealium/zealium.conf
+echo "maxconnections=250" >> /home/zealium1/.zealium/zealium.conf
+echo "masternode=1" >> /home/zealium1/.zealium/zealium.conf
+echo "rpcport=19081" >> /home/zealium1/.zealium/zealium.conf
+echo "listen=0" >> /home/zealium1/.zealium/zealium.conf
+echo "externalip=$(hostname -I | cut -f1 -d' '):31090" >> /home/zealium1/.zealium/zealium.conf
+echo "masternodeprivkey=$MNKEY" >> /home/zealium1/.zealium/zealium.conf
+echo "addnode=104.227.34.247" >> /home/zealium1/.zealium/zealium.conf
 MN1=0
 if [[ $NULLREC = "y" ]] ; then
 echo "masterNode1 : true" >> /usr/local/nullentrydev/nzl.log
@@ -239,12 +226,12 @@ echo "walletVersion1 : 1.0.1.2" >> /usr/local/nullentrydev/nzl.log
 echo "scriptVersion1 : 0.99" >> /usr/local/nullentrydev/nzl.log
 fi
 else
-echo -e ${YELLOW}"Found /home/zealiumcoin1/.zealiumcoin/zealium.conf"${CLEAR}
+echo -e ${YELLOW}"Found /home/zealium1/.zealium/zealium.conf"${CLEAR}
 echo -e ${YELLOW}"Skipping Configuration there"${CLEAR}
 fi
 echo
 echo -e ${YELLOW}"Launching NZL Node"${CLEAR}
-zealiumd -datadir=/home/zealiumcoin1/.zealiumcoin -daemon
+zealiumd -datadir=/home/zealium1/.zealium -daemon
 echo
 echo -e ${YELLOW}"Looking for a Shared Masternode Service? Check out Crypto Hash Tank" ${CLEAR}
 echo -e ${YELLOW}"Support my Project, and put your loose change to work for you!" ${CLEAR}
@@ -254,8 +241,8 @@ echo -e ${YELLOW}"Special Thanks to the BitcoinGenX (BGX) Community" ${CLEAR}
 sleep 20
 echo -e "${RED}This process can take a while!${CLEAR}"
 echo -e "${YELLOW}Waiting on Masternode Block Chain to Synchronize${CLEAR}"
-until zealium-cli -datadir=/home/zealiumcoin1/.zealiumcoin mnsync status | grep -m 1 'IsBlockchainSynced" : true'; do
-zealium-cli -datadir=/home/zealiumcoin1/.zealiumcoin getblockcount
+until zealium-cli -datadir=/home/zealium1/.zealium mnsync status | grep -m 1 'IsBlockchainSynced": true'; do
+zealium-cli -datadir=/home/zealium1/.zealium getblockcount
 sleep 60
 done
 
@@ -264,8 +251,8 @@ echo -e ${BOLD}"Your NZL Node has Launched."${CLEAR}
 echo
 
 echo -e "${GREEN}You can check the status of your NZL Masternode with"${CLEAR}
-echo -e "${YELLOW} zealium-cli -datadir=/home/zealiumcoin1/.zealiumcoin masternode status"${CLEAR}
-echo -e "${YELLOW}For mn1: \"zealium-cli -datadir=/home/zealiumcoin1/.zealiumcoin masternode status\""${CLEAR}
+echo -e "${YELLOW} zealium-cli -datadir=/home/zealium1/.zealium masternode status"${CLEAR}
+echo -e "${YELLOW}For mn1: \"zealium-cli -datadir=/home/zealium1/.zealium masternode status\""${CLEAR}
 echo
 echo -e "${RED}Status 29 may take a few minutes to clear while the daemon processes the chainstate"${CLEAR}
 echo -e "${GREEN}The data below needs to be in your local masternode configuration file:${CLEAR}"
