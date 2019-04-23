@@ -241,7 +241,7 @@ echo -e ${YELLOW}"Special Thanks to the BitcoinGenX (BGX) Community" ${CLEAR}
 sleep 20
 echo -e "${RED}This process can take a while!${CLEAR}"
 echo -e "${YELLOW}Waiting on Masternode Block Chain to Synchronize${CLEAR}"
-until zealium-cli -datadir=/home/zealium1/.zealium mnsync status | grep -m 1 'IsBlockchainSynced": true'; do
+until zealium-cli -datadir=/home/zealium1/.zealium mnsync status | grep -m 1 'IsBlockchainSynced" : true'; do
 zealium-cli -datadir=/home/zealium1/.zealium getblockcount
 sleep 60
 done
